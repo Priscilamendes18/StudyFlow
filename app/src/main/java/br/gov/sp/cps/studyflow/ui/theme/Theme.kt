@@ -1,54 +1,57 @@
 package br.gov.sp.cps.studyflow.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
+import androidx.compose.ui.graphics.Color
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
+    primary = RoxoPrimary,
     onPrimary = Color.White,
+    primaryContainer = RoxoLightContainer,
+    onPrimaryContainer = RoxoOnContainer,
+    secondary = LilasSecondary,
+    onSecondary = GrafiteDark,
+    secondaryContainer = LilasContainer,
+    onSecondaryContainer = LilasOnContainer,
+    tertiary = SoftPeachText,
+    tertiaryContainer = SoftPeachCard,
+    onTertiaryContainer = SoftPeachText,
+    background = LavandaBackground,
+    onBackground = GrafiteDark,
+    surface = SurfaceLight,
+    onSurface = GrafiteDark,
+    surfaceVariant = SurfaceVariantLight,
+    onSurfaceVariant = Color(0xFF5A5675)
+)
+
+private val DarkColorScheme = darkColorScheme(
+    primary = LilasSecondary,
+    onPrimary = GrafiteDark,
+    primaryContainer = Color(0xFF383359),
+    onPrimaryContainer = TextWhite,
+    secondary = RoxoPrimary,
     onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    secondaryContainer = Color(0xFF423D66),
+    onSecondaryContainer = TextWhite,
+    tertiary = Color(0xFFFFB4A9),
+    background = GrafiteBackground,
+    onBackground = TextWhite,
+    surface = GrafiteSurface,
+    onSurface = TextWhite,
+    surfaceVariant = GrafiteSurfaceVariant,
+    onSurfaceVariant = Color(0xFFD4CEE8)
 )
 
 @Composable
 fun StudyflowTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     MaterialTheme(
         colorScheme = colorScheme,

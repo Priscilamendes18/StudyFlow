@@ -235,12 +235,13 @@ class StudyFlowViewModel(application: Application) : AndroidViewModel(applicatio
     // ==================== PESQUISA DE LIVROS (API GOOGLE BOOKS) ====================
 
     fun searchBooks(query: String) {
-        if (query.isBlank()) return
+        val cleanQuery = query.trim()
+        if (cleanQuery.isBlank()) return
         viewModelScope.launch {
             _isSearchingBooks.value = true
             _bookSearchError.value = null
             try {
-                val response = GoogleBooksClient.api.searchBooks(query = query)
+                val response = GoogleBooksClient.api.searchBooks(query = cleanQuery)
                 val items = response.items?.mapNotNull { item ->
                     val info = item.volumeInfo ?: return@mapNotNull null
                     val thumbnail = info.imageLinks?.thumbnail
@@ -259,16 +260,120 @@ class StudyFlowViewModel(application: Application) : AndroidViewModel(applicatio
                     )
                 } ?: emptyList()
 
-                _searchedBooks.value = items
-                if (items.isEmpty()) {
-                    _bookSearchError.value = "Nenhum livro encontrado para '$query'."
+                if (items.isNotEmpty()) {
+                    _searchedBooks.value = items
+                    _bookSearchError.value = null
+                } else {
+                    _searchedBooks.value = getFallbackBooks(cleanQuery)
+                    _bookSearchError.value = "Nenhum livro retornado da API. Exibindo livros de estudo recomendados para '$cleanQuery'."
+                }
+            } catch (e: retrofit2.HttpException) {
+                _searchedBooks.value = getFallbackBooks(cleanQuery)
+                if (e.code() == 429) {
+                    _bookSearchError.value = "A API do Google Books atingiu o limite temporário de acessos. Exibindo sugestões de livros recomendados para '$cleanQuery'."
+                } else {
+                    _bookSearchError.value = "Erro HTTP ${e.code()} na API Google Books. Exibindo sugestões de livros recomendados para '$cleanQuery'."
                 }
             } catch (e: Exception) {
-                _bookSearchError.value = "Erro ao buscar livros: ${e.localizedMessage ?: "Verifique sua conexão"}"
-                _searchedBooks.value = emptyList()
+                _searchedBooks.value = getFallbackBooks(cleanQuery)
+                _bookSearchError.value = "Falha ao conectar à API Google Books. Exibindo sugestões recomendadas para '$cleanQuery'."
             } finally {
                 _isSearchingBooks.value = false
             }
+        }
+    }
+
+    private fun getFallbackBooks(query: String): List<BookModel> {
+        val q = query.lowercase(java.util.Locale.ROOT)
+        return when {
+            q.contains("matem") || q.contains("calc") || q.contains("álgebra") -> listOf(
+                BookModel(
+                    id = "fb1",
+                    title = "Cálculo - Volume 1",
+                    authors = "James Stewart",
+                    description = "Livro-texto essencial e referência indispensável para disciplinas de cálculo diferencial e integral.",
+                    thumbnailUrl = "",
+                    infoLink = "https://books.google.com"
+                ),
+                BookModel(
+                    id = "fb2",
+                    title = "Álgebra Linear e Suas Aplicações",
+                    authors = "David C. Lay",
+                    description = "Conceitos fundamentais de matrizes, espaços vetoriais e transformações lineares.",
+                    thumbnailUrl = "",
+                    infoLink = "https://books.google.com"
+                ),
+                BookModel(
+                    id = "fb3",
+                    title = "Fundamentos de Matemática Elementar",
+                    authors = "Gelson Iezzi",
+                    description = "Volume indispensável para revisão e base matemática acadêmica.",
+                    thumbnailUrl = "",
+                    infoLink = "https://books.google.com"
+                )
+            )
+            q.contains("prog") || q.contains("algoritm") || q.contains("comput") || q.contains("código") || q.contains("java") || q.contains("kotlin") -> listOf(
+                BookModel(
+                    id = "fb4",
+                    title = "Algoritmos: Teoria e Prática",
+                    authors = "Thomas H. Cormen",
+                    description = "A bíblia dos algoritmos e estruturas de dados para estudantes de engenharia e computação.",
+                    thumbnailUrl = "",
+                    infoLink = "https://books.google.com"
+                ),
+                BookModel(
+                    id = "fb5",
+                    title = "Código Limpo (Clean Code)",
+                    authors = "Robert C. Martin",
+                    description = "Habilidades práticas para escrever código legível, sustentável e de alta qualidade.",
+                    thumbnailUrl = "",
+                    infoLink = "https://books.google.com"
+                ),
+                BookModel(
+                    id = "fb6",
+                    title = "Entendendo Algoritmos",
+                    authors = "Aditya Y. Bhargava",
+                    description = "Um guia ilustrado e prático para estudantes de programação e sistemas de informação.",
+                    thumbnailUrl = "",
+                    infoLink = "https://books.google.com"
+                )
+            )
+            q.contains("físic") || q.contains("mecan") || q.contains("eletro") -> listOf(
+                BookModel(
+                    id = "fb7",
+                    title = "Física para Cientistas e Engenheiros - Vol 1",
+                    authors = "Paul A. Tipler",
+                    description = "Fundamentos de mecânica, oscilações e termodinâmica no ensino superior.",
+                    thumbnailUrl = "",
+                    infoLink = "https://books.google.com"
+                ),
+                BookModel(
+                    id = "fb8",
+                    title = "Fundamentos de Física - Mecânica",
+                    authors = "Halliday & Resnick",
+                    description = "Referência acadêmica mundial para cursos superiores de exatas e engenharias.",
+                    thumbnailUrl = "",
+                    infoLink = "https://books.google.com"
+                )
+            )
+            else -> listOf(
+                BookModel(
+                    id = "fb9",
+                    title = "Como Estudar e Aprender Melhores Métodos",
+                    authors = "Barbara Oakley",
+                    description = "Técnicas de aprendizado acelerado, foco e gerenciamento de tempo acadêmico.",
+                    thumbnailUrl = "",
+                    infoLink = "https://books.google.com"
+                ),
+                BookModel(
+                    id = "fb10",
+                    title = "Metodologia Científica para Iniciantes",
+                    authors = "Eva Maria Lakatos",
+                    description = "Guia completo para organização de pesquisas, trabalhos acadêmicos e TCC.",
+                    thumbnailUrl = "",
+                    infoLink = "https://books.google.com"
+                )
+            )
         }
     }
 }

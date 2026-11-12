@@ -86,7 +86,9 @@ class MainActivity : ComponentActivity() {
                             title = {
                                 Text(
                                     text = "StudyFlow",
-                                    style = MaterialTheme.typography.titleLarge
+                                    style = MaterialTheme.typography.titleLarge.copy(
+                                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                                    )
                                 )
                             },
                             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(

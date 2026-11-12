@@ -191,16 +191,21 @@ fun TaskCard(
 
                 Surface(
                     color = when (task.priority) {
-                        Priority.ALTA -> MaterialTheme.colorScheme.errorContainer
-                        Priority.MEDIA -> MaterialTheme.colorScheme.primaryContainer
-                        Priority.BAIXA -> MaterialTheme.colorScheme.surfaceVariant
+                        Priority.ALTA -> br.gov.sp.cps.studyflow.ui.theme.SoftPeachCard
+                        Priority.MEDIA -> br.gov.sp.cps.studyflow.ui.theme.SoftPurpleCard
+                        Priority.BAIXA -> br.gov.sp.cps.studyflow.ui.theme.SoftMintCard
                     },
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(10.dp)
                 ) {
                     Text(
                         text = "Prioridade: ${task.priority.name}",
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                        style = MaterialTheme.typography.labelSmall
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                        color = when (task.priority) {
+                            Priority.ALTA -> br.gov.sp.cps.studyflow.ui.theme.SoftPeachText
+                            Priority.MEDIA -> br.gov.sp.cps.studyflow.ui.theme.SoftPurpleText
+                            Priority.BAIXA -> br.gov.sp.cps.studyflow.ui.theme.SoftMintText
+                        }
                     )
                 }
 

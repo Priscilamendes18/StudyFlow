@@ -22,9 +22,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 val AVAILABLE_COLORS = listOf(
-    "#3F51B5", "#2196F3", "#00BCD4", "#009688",
-    "#4CAF50", "#8BC34A", "#FF9800", "#FF5722",
-    "#E91E63", "#9C27B0", "#673AB7", "#607D8B"
+    "#7357D9", "#B8A8F5", "#25233A", "#6547D9",
+    "#D95338", "#188A7A", "#2196F3", "#00BCD4",
+    "#4CAF50", "#FF9800", "#E91E63", "#9C27B0"
 )
 
 fun parseHexColor(hex: String): Color {
