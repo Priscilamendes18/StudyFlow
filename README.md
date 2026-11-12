@@ -20,6 +20,13 @@ O **StudyFlow** é um aplicativo Android moderno e intuitivo desenvolvido em **K
 
 ---
 
+## 👥 Autores / Desenvolvedores
+
+- 👩‍💻 **Priscila de Carvalho Mendes**
+- 👨‍💻 **Gabriel Silva Gutierres**
+
+---
+
 ## 🎨 Identidade Visual & Paleta de Cores
 
 A interface do **StudyFlow** foi projetada com base em uma paleta elegante e acolhedora em tons de Roxo, Lilás, Lavanda e Grafite, combinando cartões em tons pastel para destaques visuais:
@@ -152,6 +159,6 @@ br.gov.sp.cps.studyflow
 
 <div align="center">
 
-Desenvolvido com 💜 em **Kotlin** & **Jetpack Compose** para facilitação do aprendizado acadêmico.
+Desenvolvido por **Priscila de Carvalho Mendes** e **Gabriel Silva Gutierres** com 💜 em **Kotlin** & **Jetpack Compose**.
 
 </div>
